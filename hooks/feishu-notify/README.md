@@ -20,7 +20,18 @@ Claude Code 的 Notification hook，将通知推送到飞书机器人。
    - `im:message` - 获取与发送消息
    - `im:message:send_as_bot` - 以应用身份发消息
 4. 获取 App ID 和 App Secret
-5. 获取接收人的 Open ID（可在飞书个人资料中查看）
+
+### 2. 获取 Open ID
+
+通过 API 调试台获取：
+
+1. 打开 API 调试台 https://open.feishu.cn/api-explorer/
+2. 找到"发送消息接口"
+3. 在查询参数页签，将 `user_id_type` 设置为 `open_id`
+4. 点击"快速复制 open_id"
+5. 在弹窗中搜索或选择指定用户，点击"复制成员 ID"
+
+> 注意：私有化环境不支持 API 调试台
 
 ### 2. 创建配置文件
 
