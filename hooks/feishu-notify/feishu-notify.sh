@@ -31,6 +31,9 @@ fi
 MESSAGE=$(echo "$INPUT" | jq -r '.message // .notification_message // "Claude Code 有新通知"' 2>/dev/null || echo "Claude Code 有新通知")
 NOTIFY_TYPE=$(echo "$INPUT" | jq -r '.notification_type // .type // "unknown"' 2>/dev/null || echo "unknown")
 
+# 从 message 中提取工具名称，如 "Claude needs your permission to use Bash" -> "Bash"
+TOOL_NAME=$(echo "$MESSAGE" | sed -n 's/.*use \([A-Za-z]*\)$/\1/p')
+
 if [ "$NOTIFY_TYPE" = "idle_prompt" ]; then
     log_debug "忽略 idle_prompt"
     exit 0
@@ -50,9 +53,13 @@ case "$NOTIFY_TYPE" in
     *) CARD_COLOR="blue"; TITLE_SUFFIX="Claude Code 通知" ;;
 esac
 
-# 标题中包含项目名称
-if [ -n "$PROJECT_NAME" ]; then
+# 标题中包含项目名称和工具名称
+if [ -n "$PROJECT_NAME" ] && [ -n "$TOOL_NAME" ]; then
+    TITLE="$PROJECT_NAME - use $TOOL_NAME"
+elif [ -n "$PROJECT_NAME" ]; then
     TITLE="$PROJECT_NAME - $TITLE_SUFFIX"
+elif [ -n "$TOOL_NAME" ]; then
+    TITLE="use $TOOL_NAME"
 else
     TITLE="$TITLE_SUFFIX"
 fi
