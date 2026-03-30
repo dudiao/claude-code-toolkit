@@ -48,16 +48,16 @@ if [ -n "$CLAUDE_PROJECT_DIR" ]; then
 fi
 
 case "$NOTIFY_TYPE" in
-    "permission_prompt") CARD_COLOR="red"; TITLE_SUFFIX="权限请求" ;;
+    "permission_prompt") CARD_COLOR="orange"; TITLE_SUFFIX="权限请求" ;;
     "subagent_complete") CARD_COLOR="green"; TITLE_SUFFIX="任务完成" ;;
     *) CARD_COLOR="blue"; TITLE_SUFFIX="Claude Code 通知" ;;
 esac
 
 # 标题中包含项目名称和工具名称
 if [ -n "$PROJECT_NAME" ] && [ -n "$TOOL_NAME" ]; then
-    TITLE="$PROJECT_NAME - use $TOOL_NAME"
+    TITLE="$PROJECT_NAME: use $TOOL_NAME"
 elif [ -n "$PROJECT_NAME" ]; then
-    TITLE="$PROJECT_NAME - $TITLE_SUFFIX"
+    TITLE="$PROJECT_NAME: $TITLE_SUFFIX"
 elif [ -n "$TOOL_NAME" ]; then
     TITLE="use $TOOL_NAME"
 else
