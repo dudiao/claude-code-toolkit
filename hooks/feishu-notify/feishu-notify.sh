@@ -98,8 +98,9 @@ if [ "$CODE" = "0" ]; then
     log_debug "推送成功"
     echo "飞书推送成功"
 else
-    log_debug "推送失败: code=$CODE"
-    echo "飞书推送失败"
+    ERROR_MSG=$(echo "$RESPONSE" | jq -r '.msg // .error.message // "未知错误"')
+    log_debug "推送失败: code=$CODE, msg=$ERROR_MSG"
+    echo "飞书推送失败: $ERROR_MSG"
 fi
 
 exit 0
