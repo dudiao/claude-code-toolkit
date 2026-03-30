@@ -45,16 +45,19 @@ if [ -n "$CLAUDE_PROJECT_DIR" ]; then
 fi
 
 case "$NOTIFY_TYPE" in
-    "permission_prompt") CARD_COLOR="red"; TITLE="权限请求" ;;
-    "subagent_complete") CARD_COLOR="green"; TITLE="任务完成" ;;
-    *) CARD_COLOR="blue"; TITLE="Claude Code 通知" ;;
+    "permission_prompt") CARD_COLOR="red"; TITLE_SUFFIX="权限请求" ;;
+    "subagent_complete") CARD_COLOR="green"; TITLE_SUFFIX="任务完成" ;;
+    *) CARD_COLOR="blue"; TITLE_SUFFIX="Claude Code 通知" ;;
 esac
 
+# 标题中包含项目名称
 if [ -n "$PROJECT_NAME" ]; then
-    CARD_CONTENT="**项目**: $PROJECT_NAME"$'\n\n'"$MESSAGE"
+    TITLE="$PROJECT_NAME - $TITLE_SUFFIX"
 else
-    CARD_CONTENT="$MESSAGE"
+    TITLE="$TITLE_SUFFIX"
 fi
+
+CARD_CONTENT="$MESSAGE"
 
 TOKEN_RESPONSE=$(curl -s -X POST "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal" \
     -H "Content-Type: application/json" \
